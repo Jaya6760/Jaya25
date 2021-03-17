@@ -1,0 +1,27 @@
+func dynamicArray(n: Int, queries: [[Int]]) -> [Int] {
+    var sequences: [Int: [Int]] = [:]
+    var lastAnswer = 0
+    var answerlist = [Int]()
+    for query in queries {
+        let queryType = query[0]
+        let x = query[1]
+        let y = query[2]
+        switch queryType {
+        case 1:
+            let seq = (x ^ lastAnswer) % n
+            if var sequence = sequences[seq] {
+                sequence.append(y)
+                sequences[seq] = sequence
+            } else {
+                sequences[seq] = [y]
+            }
+        case 2:
+            let seq = (x ^ lastAnswer) % n
+            let index = y % (sequences[seq])!.count
+            lastAnswer = sequences[seq]![index]
+            answerlist.append(lastAnswer)
+        default: break
+        }
+    }
+    return answerlist
+}
